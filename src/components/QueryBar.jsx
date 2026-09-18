@@ -21,7 +21,7 @@ function QueryBar() {
     }
   };
   return (
-    <div className="flex items-center w-full max-w-3xl h-16 bg-[#1f1f1f] px-6 rounded-full">
+    <div className="relative flex items-center w-full max-w-3xl min-w-0 h-16 bg-[#1f1f1f] px-6 sm:px-6 rounded-full">
       <button
         type="button"
         className="flex h-9 w-9 shrink-0 items-center justify-center text-[#c4c7c5] hover:bg-white/10"
@@ -34,19 +34,22 @@ function QueryBar() {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Ask Gemini"
-        className="ml-1 flex-1 bg-transparent text-[#c4c7c5] placeholder:text-[#9aa0a6] h-10 border-none outline-none"
+        className="ml-1 min-w-0 flex-1 bg-transparent text-[#c4c7c5] placeholder:text-[#9aa0a6] h-10 border-none outline-none"
       />
-      <div className="relative">
+      <div className="fixed left-3 top-3 z-50 md:static md:z-auto">
         <button
           type="button"
           onClick={() => setModelOpen(!modelOpen)}
-          className="flex h-9 shrink-0 items-center gap-1 rounded-full  px-2 text-[#c4c7c5] hover:bg-white/10"
+          className="flex h-9 shrink-0 items-center gap-1 rounded-full px-2 sm:px-3 text-[#c4c7c5] hover:bg-white/10"
         >
-          <span className="text-sm">{selectModel}</span>
+          <span className="text-xs whitespace-nowrap">
+            <span className="md:hidden">Gemini </span>
+            {selectModel}
+          </span>
           <IoIosArrowDown size={18} />
         </button>
         {modelOpen && (
-          <div className="absolute right-0 top-11 z-50 w-40 rounded-xl bg-[#2b2b2b] p-1 shadow-lg">
+          <div className="absolute right--1 top-14 z-50 w-40 rounded-xl bg-[#2b2b2b] p-1 shadow-lg">
             {models.map((model) => (
               <button
                 key={model}
