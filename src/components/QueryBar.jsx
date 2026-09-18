@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoArrowUpOutline } from "react-icons/io5";
 import { IoMdMic } from "react-icons/io";
 import useChat from "../Context/useChat";
+import useTheme from "../Context/useTheme";
 
 function QueryBar() {
   const [query, setQuery] = useState("");
@@ -11,6 +12,7 @@ function QueryBar() {
   const [selectModel, setSelectModel] = useState("Gemini Flash");
 
   const { sendMessage } = useChat();
+  const { darkMode } = useTheme();
 
   const models = ["3.5 Flash-Lite", "3.6 Flash", "3.1 Pro"];
 
@@ -26,10 +28,12 @@ function QueryBar() {
     }
   };
   return (
-    <div className="relative flex items-center w-full max-w-3xl min-w-0 h-16 bg-[#1f1f1f] px-6 sm:px-6 rounded-full">
+    <div
+      className={`relative flex items-center w-full max-w-3xl min-w-0 h-16 ${darkMode ? "bg-[#1f1f1f] text-[#e3e3e3]" : "bg-[#f1f3f4] text-[#1f1f1f]"} px-6 sm:px-6 rounded-full`}
+    >
       <button
         type="button"
-        className="flex h-9 w-9 shrink-0 rounded-full items-center justify-center text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
+        className={`flex h-9 w-9 shrink-0 rounded-full items-center justify-center cursor-pointer ${darkMode ? "text-[#c4c7c5] hover:bg-white/10" : "text-[#5f6368] hover:bg-black/5"}`}
       >
         <FaPlus size={18} />
       </button>
@@ -39,7 +43,7 @@ function QueryBar() {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Ask Gemini"
-        className="ml-1 min-w-0 flex-1 bg-transparent text-[#c4c7c5] placeholder:text-[#9aa0a6] h-10 border-none outline-none"
+        className={`ml-1 min-w-0 flex-1 bg-transparent h-10 border-none outline-none ${darkMode ? "text-[#e3e3e3] placeholder:text-[#9aa0a6]" : "text-[#202124] placeholder:text-[#5f6368]"}`}
       />
       <div className="fixed left-3 top-3 z-50 md:static md:z-auto">
         <button
@@ -48,13 +52,19 @@ function QueryBar() {
           className="flex h-9 shrink-0 items-center justify-center  rounded-full px-2 sm:px-3 text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
         >
           <span className="text-xs whitespace-nowrap">
-            <span className="md:hidden">Gemini </span>
+            <span
+              className={`md:hidden ${darkMode ? "text-[#e3e3e3]" : "text-[#1f1f1f]"}`}
+            >
+              Gemini{" "}
+            </span>
             {selectModel}
           </span>
           <IoIosArrowDown size={18} />
         </button>
         {modelOpen && (
-          <div className="absolute right--1 top-14 z-50 w-40 rounded-xl bg-[#2b2b2b] p-1 shadow-lg">
+          <div
+            className={`absolute right--1 top-14 z-50 w-40 rounded-xl p-1 shadow-lg ${darkMode ? "bg-[#2b2b2b]" : "bg-white border border-[#ffffff]"}`}
+          >
             {models.map((model) => (
               <button
                 key={model}
@@ -65,8 +75,12 @@ function QueryBar() {
                 }}
                 className={`w-full rounded-lg px-3 py-2 text-left text-sm ${
                   selectModel === model
-                    ? "bg-white/10 text-white"
-                    : "text-[#c4c7c5] hover:bg-white/10"
+                    ? darkMode
+                      ? "bg-white/10 text-white"
+                      : "bg-[#e8f0fe] text-[#174ea6]"
+                    : darkMode
+                      ? "text-[#c4c7c5] hover:bg-white/10"
+                      : "text-[#5f6368] hover:bg-black/5"
                 }`}
               >
                 {model}
@@ -78,7 +92,7 @@ function QueryBar() {
 
       <button
         type="button"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full cursor-pointer ${darkMode ? "text-[#c4c7c5] hover:bg-white/10" : "text-[#5f6368] hover:bg-black/5"}`}
       >
         <IoMdMic size={18} />
       </button>
@@ -87,7 +101,7 @@ function QueryBar() {
         <button
           type="button"
           onClick={handleSubmit}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1851ad] text-white cursor-pointer"
+          className={`flex h-10 w-10 items-center justify-center rounded-full cursor-pointer ${darkMode ? "bg-[#1851ad] text-white hover:bg-[#2865c7]" : "bg-[#a8c7fa] text-[#174ea6] hover:bg-[#8ab4f8]"}`}
         >
           <IoArrowUpOutline size={18} />
         </button>
