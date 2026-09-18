@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoArrowUpOutline } from "react-icons/io5";
 import { IoMdMic } from "react-icons/io";
+import useChat from "../Context/useChat";
 
 function QueryBar() {
   const [query, setQuery] = useState("");
   const [modelOpen, setModelOpen] = useState(false);
   const [selectModel, setSelectModel] = useState("Gemini Flash");
 
+  const { sendMessage } = useChat();
+
   const models = ["3.5 Flash-Lite", "3.6 Flash", "3.1 Pro"];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!query.trim()) return;
-    console.log("Submitted:", query);
+    await sendMessage(query);
     setQuery("");
   };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
@@ -24,7 +29,7 @@ function QueryBar() {
     <div className="relative flex items-center w-full max-w-3xl min-w-0 h-16 bg-[#1f1f1f] px-6 sm:px-6 rounded-full">
       <button
         type="button"
-        className="flex h-9 w-9 shrink-0 items-center justify-center text-[#c4c7c5] hover:bg-white/10"
+        className="flex h-9 w-9 shrink-0 rounded-full items-center justify-center text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
       >
         <FaPlus size={18} />
       </button>
@@ -40,7 +45,7 @@ function QueryBar() {
         <button
           type="button"
           onClick={() => setModelOpen(!modelOpen)}
-          className="flex h-9 shrink-0 items-center gap-1 rounded-full px-2 sm:px-3 text-[#c4c7c5] hover:bg-white/10"
+          className="flex h-9 shrink-0 items-center justify-center  rounded-full px-2 sm:px-3 text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
         >
           <span className="text-xs whitespace-nowrap">
             <span className="md:hidden">Gemini </span>
@@ -73,10 +78,20 @@ function QueryBar() {
 
       <button
         type="button"
-        className="flex h-9 w-9 shrink-0 items-center rounded-full text-[#c4c7c5] hover:bg-white/10"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#c4c7c5] hover:bg-white/10 cursor-pointer"
       >
         <IoMdMic size={18} />
       </button>
+
+      {query.trim() && (
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1851ad] text-white cursor-pointer"
+        >
+          <IoArrowUpOutline size={18} />
+        </button>
+      )}
     </div>
   );
 }
